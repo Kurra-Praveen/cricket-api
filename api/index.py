@@ -1,4 +1,5 @@
 import random
+import os
 import requests
 from bs4 import BeautifulSoup as bs
 from markupsafe import escape
@@ -10,9 +11,9 @@ import pytz
 # Replace the CORS URL with your's
 app = Flask(__name__)
 app.json.sort_keys = False
-cors = CORS(app, resources={
-            r"/score/*": {"origins": [r'^https://.+sanweb.info$', r'^https://.+mskian.com$']}})
-
+# cors = CORS(app, resources={
+#             r"/score/*": {"origins": [r'^https://.+sanweb.info$', r'^https://.+mskian.com$']}})
+cors=CORS(app, resources={r"/score/*": {"origins": "*"}})
 user_agent_list = [
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0',
@@ -529,7 +530,8 @@ def invalid_route(e):
 
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
     # app.run(
     #    host="0.0.0.0",
     #    port=int("5000")
